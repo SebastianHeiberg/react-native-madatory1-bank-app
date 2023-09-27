@@ -3,10 +3,10 @@ import { StyleSheet, Pressable, View, Text} from 'react-native'
 
 function AccountItem(props) {
     return (
-      <Pressable>
+      <Pressable onPress={() => props.navigation.navigate('DetailView', {account: props.account, balance: props.balance, id: props.id})}>
         <View style={styles.account}>
-          <Text>{props.text} </Text>
-          <Text>saldo: 1 kr.</Text>
+          <Text>{props.account} </Text>
+          <Text>saldo: {props.balance} kr.</Text>
         </View>
       </Pressable>
     );

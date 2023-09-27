@@ -2,12 +2,16 @@ import { StyleSheet, Text, View, FlatList, } from 'react-native';
 import { useState } from 'react';
 import AccountItem from './AccountItem.js';
 import { StatusBar } from 'expo-status-bar';
+import { useCollection } from 'react-firebase-hooks/firestore'
+import { collection } from 'firebase/firestore';
+import { database } from '../firebase';
 
 
-export const Homepage = ({navigation, route}) => {
+const Homepage = ({navigation, route}) => {
 
-    const [accounts, setAccounts] = useState([{ text: "Budget"}, { text: "Fælles"}, { text: "Opsparing"}])
-  
+    const [values, loading, error] = useCollection(collection(database, "bank" ))
+    const data = values?.docs.map((doc) => ({...doc.data(), id: doc.id}))
+    console.log(data)
      return (
       <View style={styles.container}>
         <View style={styles.topBox}>
@@ -16,11 +20,14 @@ export const Homepage = ({navigation, route}) => {
         <View style={styles.accountsBox}>
         <FlatList
             style={styles.list}
-            data={accounts}
+            data={data}
             renderItem={(itemData) => {
               return (
                 <AccountItem
-                  text={itemData.item.text}
+                  account={itemData.item.account}
+                  balance={itemData.item.balance}
+                  id = {itemData.item.id}
+                  navigation = {navigation}
                 />
               );
             }}
@@ -28,11 +35,14 @@ export const Homepage = ({navigation, route}) => {
         </View>
         <View style={styles.createAccount}>
           <Text onPress={() => navigation.navigate('NewAccount')}>opret ny konto</Text>
+          <Text style={{marginTop: 3}}>Dine profil oplysninger</Text>
         </View>
         <StatusBar style="auto" />
       </View>
     );
   }
+
+  export default Homepage
 
   const styles = StyleSheet.create({
     container: {

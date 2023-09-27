@@ -1,23 +1,47 @@
-import React from 'react';
+import { collection, addDoc } from 'firebase/firestore';
 import { Text, View, TextInput, StyleSheet} from 'react-native';
+import { database } from '../firebase';
+import { useState } from 'react';
 
-const NewAccount = () => {
+
+const NewAccount = ({navigation, route}) => {
+
+  const [account, setAccount] = useState("")
+  const [balance, setBalance] = useState("")
+
+
+  async function addToDatabase() {
+if(balance && account) {
+    try{
+    await addDoc(collection(database, "bank"), {
+      account, balance
+    })
+    navigation.navigate('Home')
+  } catch (err) {
+    console.log("fejl i db :",err)
+  }
+   } 
+  }
+  
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <View style={styles.inputFields}>
           <Text style={styles.field}>Navn på kontoen</Text>
-          <TextInput style={styles.inputText}  placeholder='Fx. børneopsparing'/>
+          <TextInput style={styles.inputText} onChangeText={ (txt) => setAccount(txt) } placeholder='Fx. børneopsparing'/>
           <Text style={styles.field}>Saldo på kontoen</Text>
-          <TextInput style={styles.inputText} placeholder='Antal i kr.'/>
+          <TextInput style={styles.inputText} onChangeText={ (txt) => setBalance(txt) } placeholder='Antal i kr.'/>
           <View style={styles.submitView}>
-          <Text style={styles.submitText}> Opret konto </Text>
+          <Text style={styles.submitText} onPress={() => addToDatabase()}> Opret konto </Text>
           </View>
         </View>
       </View>
     </View>
   );
 };
+
+
 
 export default NewAccount;
 
