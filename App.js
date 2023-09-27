@@ -1,13 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, } from 'react-native';
 import { useState } from 'react';
-import AccountItem from './components/AccountItem';
-
+import AccountItem from './components/AccountItem.js';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import NewAccount from './components/NewAccount.js';
 export default function App() {
+
+  
+  const Stack = createNativeStackNavigator()
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Home'>
+        <Stack.Screen
+        name='Home'
+        component={Homepage}
+        />
+        <Stack.Screen
+        name='NewAccount'
+        component={NewAccount}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+
+  )
+}
+
+const Homepage = ({navigation, route}) => {
 
   const [accounts, setAccounts] = useState([{ text: "Budget"}, { text: "Fælles"}, { text: "Opsparing"}])
 
-  return (
+   return (
     <View style={styles.container}>
       <View style={styles.topBox}>
         <Text>Sebastians bank app</Text>
@@ -26,7 +49,7 @@ export default function App() {
         />
       </View>
       <View style={styles.createAccount}>
-        <Text>opret ny konto</Text>
+        <Text onPress={() => navigation.navigate('NewAccount')}>opret ny konto</Text>
       </View>
       <StatusBar style="auto" />
     </View>
