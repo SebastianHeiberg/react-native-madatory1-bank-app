@@ -1,6 +1,5 @@
 import { StyleSheet, Pressable, View, Text} from 'react-native'
 
-
 function AccountItem(props) {
     return (
       <Pressable onPress={() => props.navigation.navigate('DetailView', {account: props.account, balance: props.balance, id: props.id})}>

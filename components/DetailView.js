@@ -1,4 +1,7 @@
 import { Text, View, StyleSheet} from 'react-native'
+import { database } from '../firebase'
+import { deleteDoc, doc } from 'firebase/firestore';
+
 
 
 const DetailView = ({route, navigation}) => {
@@ -7,8 +10,9 @@ const DetailView = ({route, navigation}) => {
     const account = route.params.account
     const id = route.params.id
 
-    function deleteAccount () {
-        console.log("This was deleted")
+    async function deleteAccount () {
+        await deleteDoc(doc(database, "bank", id))
+        navigation.navigate('Home')
     }
 
 
@@ -33,7 +37,7 @@ const DetailView = ({route, navigation}) => {
                     <Text style={styles.returnHome} onPress={() => navigation.navigate('Home')}> Til forsiden</Text>
                 </View>
                 <View style={styles.smallButtonView}>
-                    <Text style={styles.deleteAccount}> Slet kontoen</Text>
+                    <Text style={styles.deleteAccount} onPress={ () => deleteAccount()}> Slet kontoen</Text>
                 </View>
             </View> 
         </View>     

@@ -1,30 +1,59 @@
 import { StyleSheet, View, Text, Image} from 'react-native';
+import * as ImagePicker from 'expo-image-picker'
+import { useState, useEffect } from 'react';
+import { ref, uploadBytes, getDownloadURL} from 'firebase/storage'
+import { storage } from '../firebase';
 
 
 const Profile = ({navigation, route}) => {
 
+  const [imagePath, setImagePath] = useState(null)
+
+  useEffect( () => {
+     getDownloadURL(ref(storage, "myProfilPic"))
+      .then((url) => {
+        setImagePath(url);
+      }).catch((err) => {
+        console.log("Error while gette profile picture: ", err)
+      })
+  }, []); 
+
+  async function uploadImage(){
+    const res = await fetch(imagePath)
+    const blob = await res.blob()
+    const storageRef = ref(storage, "myProfilPic")
+    uploadBytes(storageRef, blob)
+  }
+
+  async function launcImagePicker (){
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true
+    })
+    if (!result.canceled){
+      setImagePath(result.assets[0].uri)
+      await uploadImage()
+    }
+  }
+   
     return (
       <View style={styles.container}>
         <View style={styles.profileContainer}>
-            <Image style={styles.profilePicture}/>
-            <Text style={styles.choosePicture}>Vælg et nyt billede</Text>
+            <Image style={styles.profilePicture} source={{uri: imagePath}}/>
+            <Text style={styles.choosePicture} onPress={() => launcImagePicker()}>Vælg et nyt billede</Text>
             <Text style={styles.field}>Indehaver af kontoen</Text>
             <Text style={styles.outputText}>Sebastian Heiberg</Text>
             <Text style={styles.field}>Fødselsdato</Text>
             <Text style={styles.outputText}>xx.xx.xxxx</Text>
             <Text style={styles.field}>Adresse</Text>
-            <text style={styles.outputText}>Strandvejen 1</text>
+            <Text style={styles.outputText}>Strandvejen 1</Text>
             <Text style={styles.field}>By</Text>
-            <text style={styles.outputText}>Hellerup</text>
+            <Text style={styles.outputText}>Hellerup</Text>
             <Text style={styles.returnText} onPress={() => navigation.navigate('Home')}> Til forsiden </Text>
-
         </View>
       </View>
     );
   };
-  
-  
-  
+   
   export default Profile;
 
   const styles = StyleSheet.create({
@@ -65,10 +94,10 @@ const Profile = ({navigation, route}) => {
       },
       profilePicture: {
         margin: 5,
-        backgroundColor: 'green',
         height: 150,
         width: 150,
-        borderRadius: 100
+        borderRadius: 100, 
+        backgroundColor: 'green'
       },
       choosePicture: {
         backgroundColor: 'lightblue',
