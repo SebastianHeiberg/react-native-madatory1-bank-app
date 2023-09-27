@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NewAccount from './components/NewAccount.js';
 import Homepage from './components/Homepage.js';
 import DetailView from './components/DetailView.js';
+import Profile from '/components/Profile.js';
 
 export default function App() {
 
@@ -15,15 +16,20 @@ const Stack = createNativeStackNavigator()
         <Stack.Screen
         name='Home'
         component={Homepage}
-        />
+        options={{ headerShown: false }}/>
         <Stack.Screen
         name='NewAccount'
         component={NewAccount}
-        options={{ title: 'Home' }}/>
+        options={{ headerShown: false }}/>
         <Stack.Screen
         name='DetailView'
         component={DetailView}
-        options={{ title: 'Home' }}/>
+        options={{ headerShown: false }}/>
+        <Stack.Screen
+        name='Profile'
+        component={Profile}
+        options={{ headerShown: false }}/>
+
 
       </Stack.Navigator>
     </NavigationContainer>

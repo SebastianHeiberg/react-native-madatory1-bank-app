@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View, FlatList, } from 'react-native';
-import { useState } from 'react';
 import AccountItem from './AccountItem.js';
 import { StatusBar } from 'expo-status-bar';
 import { useCollection } from 'react-firebase-hooks/firestore'
@@ -11,7 +10,7 @@ const Homepage = ({navigation, route}) => {
 
     const [values, loading, error] = useCollection(collection(database, "bank" ))
     const data = values?.docs.map((doc) => ({...doc.data(), id: doc.id}))
-    console.log(data)
+
      return (
       <View style={styles.container}>
         <View style={styles.topBox}>
@@ -34,8 +33,9 @@ const Homepage = ({navigation, route}) => {
           />
         </View>
         <View style={styles.createAccount}>
-          <Text onPress={() => navigation.navigate('NewAccount')}>opret ny konto</Text>
-          <Text style={{marginTop: 3}}>Dine profil oplysninger</Text>
+          <Text style={styles.linkItems} onPress={() => navigation.navigate('NewAccount')}>Opret ny konto</Text>
+          <Text style={styles.linkItems} onPress={() => navigation.navigate('Profile')}>Dine profil oplysninger</Text>
+          <Text style={styles.linkItems}>Nærmeste hæveautomat på kort</Text>
         </View>
         <StatusBar style="auto" />
       </View>
@@ -76,7 +76,7 @@ const Homepage = ({navigation, route}) => {
       width: '100%'
      },
      createAccount: {
-      flex: 1,
+      flex: 2,
       borderTopWidth: 5,
       borderColor: 'black',
       margin: 10,
@@ -85,6 +85,15 @@ const Homepage = ({navigation, route}) => {
       alignItems: 'center',
       width: '80%',
       backgroundColor: 'white',
+     },
+     linkItems: {
+      marginTop: 3,
+      padding: 3,
+      backgroundColor: 'lightblue',
+      borderWidth: 1,
+      borderColor: 'black',
+      borderRadius: 5
+
      }   
   });
   

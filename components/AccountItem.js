@@ -24,6 +24,7 @@ account: {
     backgroundColor: 'lightblue',
     flex: 1,
     justifyContent: 'space-between',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    borderRadius: 10
    }
 })

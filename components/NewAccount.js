@@ -34,6 +34,7 @@ if(balance && account) {
           <TextInput style={styles.inputText} onChangeText={ (txt) => setBalance(txt) } placeholder='Antal i kr.'/>
           <View style={styles.submitView}>
           <Text style={styles.submitText} onPress={() => addToDatabase()}> Opret konto </Text>
+          <Text style={styles.returnText} onPress={() => navigation.navigate('Home')}> Til forsiden </Text>
           </View>
         </View>
       </View>
@@ -78,7 +79,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     borderColor: 'black',
     backgroundColor: 'lightblue',
-    width: '90%'
+    width: '90%',
+    borderRadius: 10
+
 
   },
   inputText: {
@@ -93,7 +96,10 @@ const styles = StyleSheet.create({
     borderBlockColor: 'black',
     backgroundColor: 'lightblue',
     fontSize: '16px',
-    fontFamily: 'bold'
+    fontFamily: 'bold',
+    borderRadius: 10,
+    padding: 4
+
   },
   submitView: {
     flex:1,
@@ -101,6 +107,16 @@ const styles = StyleSheet.create({
     width: '90%',
     margin: 10,
     alignItems: 'center'    
+  },
+  returnText : {
+    borderWidth: 1,
+    borderBlockColor: 'black',
+    backgroundColor: 'lightblue',
+    fontSize: '16px',
+    fontFamily: 'bold',
+    padding: 4,
+    marginTop: 20,
+    borderRadius: 10
   }
 
 })

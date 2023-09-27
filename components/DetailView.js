@@ -1,18 +1,23 @@
-import { Text, View, StyleSheet, FlatList} from 'react-native'
+import { Text, View, StyleSheet} from 'react-native'
 
 
-const DetailView = ({navigation, route}) => {
+const DetailView = ({route, navigation}) => {
     
-    // Der skal bruges saldo, navn, id
-    // const balance = route.params.balance
-    // const account = route.params.account
-    // const id = route.params.id
+    const balance = route.params.balance
+    const account = route.params.account
+    const id = route.params.id
+
+    function deleteAccount () {
+        console.log("This was deleted")
+    }
+
 
      return (
         <View style={styles.container}>
             <View style={styles.innerContainer}>
                 <View style={styles.topBox}>
-                    <Text>Saldo: xxxx kr.</Text>   
+                    <Text>{account}</Text>
+                    <Text>Saldo: {balance} kr.</Text>   
                 </View>
                 <View style={styles.bigView}>
                         {/* TODO: Lave nogle rigtige poster der bliver gemt på databasen og opdaterer saldoen */}
@@ -23,6 +28,9 @@ const DetailView = ({navigation, route}) => {
                 </View>
                 <View style={styles.smallButtonView}>
                     <Text style={styles.submitNewExpenceText}> Ny udgift</Text>
+                </View>
+                <View style={styles.smallButtonView}>
+                    <Text style={styles.returnHome} onPress={() => navigation.navigate('Home')}> Til forsiden</Text>
                 </View>
                 <View style={styles.smallButtonView}>
                     <Text style={styles.deleteAccount}> Slet kontoen</Text>
@@ -43,10 +51,7 @@ const DetailView = ({navigation, route}) => {
     },
     bigView: {
         flex:9,
-        borderWidth: 1,
-        borderColor: 'black',
         width: '90%'
-
     }
     ,
     innerContainer: {
@@ -62,10 +67,11 @@ const DetailView = ({navigation, route}) => {
       submitNewExpenceText : {
         borderWidth: 1,
         borderBlockColor: 'black',
-        backgroundColor: 'green',
+        backgroundColor: 'lightblue',
         fontSize: '16px',
         fontFamily: 'bold',
-        padding : 5
+        padding : 5,
+        borderRadius: 20
       },
       deleteAccount : {
         borderWidth: 1,
@@ -73,7 +79,8 @@ const DetailView = ({navigation, route}) => {
         backgroundColor: 'red',
         fontSize: '16px',
         fontFamily: 'bold',
-        padding: 5
+        padding: 5,
+        borderRadius: 20
       },
       smallButtonView: {
         flex:1,
@@ -89,7 +96,10 @@ const DetailView = ({navigation, route}) => {
         margin: 5,
         alignItems: 'center',
         borderBottomWidth: 1,
-        borderColor: 'black'    
+        borderColor: 'black',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+
       },
       expence: {
         padding: 5,
@@ -99,6 +109,16 @@ const DetailView = ({navigation, route}) => {
         backgroundColor: 'lightblue',
         flex: 1,
         justifyContent: 'space-between',
-        flexDirection: 'row'
-       }
+        flexDirection: 'row',
+        borderRadius: 10
+       },
+       returnHome : {
+        borderWidth: 1,
+        borderBlockColor: 'black',
+        backgroundColor: 'lightblue',
+        fontSize: '16px',
+        fontFamily: 'bold',
+        padding: 5,
+        borderRadius: 20
+      }
   })
