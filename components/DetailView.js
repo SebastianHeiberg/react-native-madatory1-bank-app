@@ -1,19 +1,28 @@
-import { Text, View, StyleSheet} from 'react-native'
+import { Text, View, StyleSheet, Modal, TextInput} from 'react-native'
 import { database } from '../firebase'
-import { deleteDoc, doc } from 'firebase/firestore';
-
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { useState } from 'react';
 
 
 const DetailView = ({route, navigation}) => {
     
-    const balance = route.params.balance
+    const [modalVisible, setModalVisible] = useState(false)
+    const [balance, setbalance] = useState(route.params.balance) 
     const account = route.params.account
     const id = route.params.id
 
-    async function deleteAccount () {
-        await deleteDoc(doc(database, "bank", id))
+    function deleteAccount () {
+        deleteDoc(doc(database, "bank", id))
         navigation.navigate('Home')
     }
+
+    function updateAccount () {
+      console.log("fires")
+       updateDoc(doc(database, 'bank', id),{
+        balance: balance
+      })
+      }
+    
 
 
      return (
@@ -31,7 +40,7 @@ const DetailView = ({route, navigation}) => {
                         <Text style={styles.expence}>Dato xx/xx/xx udgift: xx kr.</Text>
                 </View>
                 <View style={styles.smallButtonView}>
-                    <Text style={styles.submitNewExpenceText}> Ny udgift</Text>
+                    <Text style={styles.submitNewExpenceText} onPress={() => setModalVisible(!modalVisible)}> Ny udgift</Text>
                 </View>
                 <View style={styles.smallButtonView}>
                     <Text style={styles.returnHome} onPress={() => navigation.navigate('Home')}> Til forsiden</Text>
@@ -39,10 +48,25 @@ const DetailView = ({route, navigation}) => {
                 <View style={styles.smallButtonView}>
                     <Text style={styles.deleteAccount} onPress={ () => deleteAccount()}> Slet kontoen</Text>
                 </View>
-            </View> 
+            </View>
+            <Modal visible={modalVisible}>
+              <View style={styles.modalContainer}>
+              <Text style={styles.modalinput}>Beløb: 500 kr.</Text>
+              <Text style={styles.modalinput}>Dato: 01.01.2024</Text>
+              <Text style={styles.mordalButton} onPress={() => {
+                setbalance (Number(balance) - 500)
+                updateAccount()
+                setModalVisible(!modalVisible)
+                //TODO updatere dokumentet med den nye balance
+                }}>Tilføj udgift</Text>
+              <Text style={styles.mordalButton} onPress={() => {
+                setModalVisible(!modalVisible)
+                }}>Annuler</Text>
+              </View>
+              </Modal>
         </View>     
-    )
-  }
+      )
+      }
   
   export default DetailView
 
@@ -124,5 +148,27 @@ const DetailView = ({route, navigation}) => {
         fontFamily: 'bold',
         padding: 5,
         borderRadius: 20
-      }
+      },
+      modalContainer:{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor:'lightblue',
+        },
+        mordalButton : {
+          borderWidth: 1,
+          borderBlockColor: 'black',
+          backgroundColor: 'lightblue',
+          fontSize: '16px',
+          fontFamily: 'bold',
+          padding: 5,
+          borderRadius: 20,
+          margin: 15
+        },
+        modalinput: {
+          margin: 5,
+          borderBottomWidth: 3,
+          borderColor: 'black',
+          backgroundColor: 'lightblue',
+         }
   })
