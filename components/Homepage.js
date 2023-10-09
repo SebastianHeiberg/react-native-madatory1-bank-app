@@ -8,11 +8,13 @@ import { database } from '../firebase';
 
 const Homepage = ({navigation, route}) => {
 
-    const [values, loading, error] = useCollection(collection(database, "bank" ))
+    const usercollection = route.params.enteredEmail
+    const [values, loading, error] = useCollection(collection(database, usercollection))
     const data = values?.docs.map((doc) => ({...doc.data(), id: doc.id}))
 
      return (
       <View style={styles.container}>
+        <Button title="logout"/>
         <View style={styles.topBox}>
           <Text>Sebastians bank app</Text>
         </View>
@@ -27,14 +29,15 @@ const Homepage = ({navigation, route}) => {
                   balance={itemData.item.balance}
                   id = {itemData.item.id}
                   navigation = {navigation}
+                  collection = {usercollection}
                 />
               );
             }}
           />
         </View>
         <View style={styles.createAccount}>
-          <Text style={styles.linkItems} onPress={() => navigation.navigate('NewAccount')}>Opret ny konto</Text>
-          <Text style={styles.linkItems} onPress={() => navigation.navigate('Profile')}>Dine profil oplysninger</Text>
+          <Text style={styles.linkItems} onPress={() => navigation.navigate('NewAccount', {usercollection})}>Opret ny konto</Text>
+          <Text style={styles.linkItems} onPress={() => navigation.navigate('Profile', {usercollection})}>Dine profil oplysninger</Text>
           <Text style={styles.linkItems}>Nærmeste hæveautomat på kort</Text>
         </View>
         <StatusBar style="auto" />

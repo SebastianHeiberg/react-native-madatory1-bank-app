@@ -4,6 +4,7 @@ import NewAccount from './components/NewAccount.js';
 import Homepage from './components/Homepage.js';
 import DetailView from './components/DetailView.js';
 import Profile from '/components/Profile.js';
+import Login from './components/login.js';
 
 export default function App() {
 
@@ -11,7 +12,11 @@ const Stack = createNativeStackNavigator()
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
+      <Stack.Navigator initialRouteName='Login'>
+      <Stack.Screen
+        name='Login'
+        component={Login}
+        options={{ headerShown: false }}/>
         <Stack.Screen
         name='Home'
         component={Homepage}
