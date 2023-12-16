@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderBlockColor: 'black',
     backgroundColor: 'lightblue',
-    fontSize: '16px',
+    fontSize: 16,
     fontFamily: 'bold',
     borderRadius: 10,
     padding: 4
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderBlockColor: 'black',
     backgroundColor: 'lightblue',
-    fontSize: '16px',
+    fontSize: 16,
     fontFamily: 'bold',
     padding: 4,
     marginTop: 20,

@@ -86,7 +86,7 @@ const Profile = ({navigation, route}) => {
         borderWidth: 1,
         borderBlockColor: 'black',
         backgroundColor: 'lightblue',
-        fontSize: '16px',
+        fontSize: 16,
         fontFamily: 'bold',
         padding: 4,
         marginTop: 10,

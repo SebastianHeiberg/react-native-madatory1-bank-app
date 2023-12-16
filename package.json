@@ -10,19 +10,22 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
-    "@react-navigation/native": "^6.1.8",
-    "@react-navigation/native-stack": "^6.9.14",
+    "@react-native-async-storage/async-storage": "1.18.2",
+    "@react-navigation/native": "^6.1.9",
+    "@react-navigation/native-stack": "^6.9.17",
     "axios": "^1.5.1",
     "expo": "~49.0.12",
+    "expo-app-loading": "^2.1.1",
+    "expo-auth-session": "~5.0.2",
     "expo-image-picker": "~14.3.2",
+    "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "firebase": "^10.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-firebase-hooks": "^5.1.1",
-    "react-native": "0.72.5",
-    "react-native-web": "~0.19.6",
-    "expo-auth-session": "~5.0.2"
+    "react-native": "0.72.6",
+    "react-native-web": "~0.19.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -1,16 +1,20 @@
-import { StyleSheet, Text, View, FlatList, } from 'react-native';
-import AccountItem from './AccountItem.js';
+import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
+import AccountItem from '../components/AccountItem.js';
 import { StatusBar } from 'expo-status-bar';
 import { useCollection } from 'react-firebase-hooks/firestore'
 import { collection } from 'firebase/firestore';
-import { database } from '../firebase';
+import { database } from '../firebase.js';
+import { StatusContext } from '../store/authContext.js';
+import { useContext } from 'react';
 
+export default function Homepage ({navigation, route}) {
+  
+  var statusContext = useContext(StatusContext) 
+  console.log(statusContext.currentUser)
+  const usercollection = statusContext.currentUser
+  const [values, loading, error] = useCollection(collection(database, usercollection))
+  const data = values?.docs.map((doc) => ({...doc.data(), id: doc.id}))
 
-const Homepage = ({navigation, route}) => {
-
-    const usercollection = route.params.enteredEmail
-    const [values, loading, error] = useCollection(collection(database, usercollection))
-    const data = values?.docs.map((doc) => ({...doc.data(), id: doc.id}))
 
      return (
       <View style={styles.container}>
@@ -45,7 +49,6 @@ const Homepage = ({navigation, route}) => {
     );
   }
 
-  export default Homepage
 
   const styles = StyleSheet.create({
     container: {
