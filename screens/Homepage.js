@@ -13,7 +13,7 @@ import { useState } from 'react';
 export default function Homepage ({navigation, route}) {
   
   const authContext = useContext(AuthContext) 
-  const [usercollection, setUsercollection] = useState(authContext.email)
+  const [usercollection, setUsercollection] = useState(authContext.userEmail)
   const [data, setData] = useState([]);
   const [values, loading, error] = useCollection(
     usercollection ? collection(database, usercollection) : null
@@ -21,13 +21,9 @@ export default function Homepage ({navigation, route}) {
 
 
   useEffect(() => {
-    console.log("useeffetct in homepage")
-    console.log("email: " ,authContext.email)
-    console.log("token : ", authContext.token)
-    const newData = values?.docs.map((doc) => ({...doc.data(), id: doc.id}));
-    setData(newData);
-    console.log(newData)
-  }, [values]);
+     const newData = values?.docs.map((doc) => ({...doc.data(), id: doc.id}));
+     setData(newData);
+  }, [values, usercollection]);
 
      return (
       <View style={styles.container}>

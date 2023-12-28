@@ -5,34 +5,32 @@ import React, { createContext, useState } from "react";
 export const AuthContext = createContext({
     token: '',
     isAuthenticated: false,
-    authenticate: (token, email) => {},
+    authenticate: (token, foundEmail) => {},
     logout: () => {},
-    email: '',
+    userEmail: '',
 });
 
 export default function AuthContextProvider({children}){
     const [authToken, setAuthToken] = useState();
-    const [email, setEmail] = useState();
+    const [userEmail, setUserEmail] = useState();
        
-    function authenticate(token, email) { 
-        console.log("authenticating inside the myauth-context.js")
-        console.log("hvad er min email,", email)
-        setAuthToken(token)
-        setEmail(email)
-        AsyncStorage.setItem("token", token)
-        AsyncStorage.setItem("email", email)    
+    async function authenticate(token, foundEmail) { 
+        await setUserEmail(foundEmail)
+        await AsyncStorage.setItem("email", foundEmail)
+        await setAuthToken(token)
+        await AsyncStorage.setItem("token", token)
     }
 
-    function logout() { 
+    async function logout() { 
         setAuthToken(null)
-        setEmail(null)
-        AsyncStorage.removeItem("token")
-        AsyncStorage.removeItem("email")
+        setUserEmail(null)
+        await AsyncStorage.removeItem("token")
+        await AsyncStorage.removeItem("email")
     }
 
      const value = {
         token: authToken,
-        email: email,
+        userEmail: userEmail,
         // !! laver authToken om til true eller false
         isAuthenticated: !!authToken,
         authenticate: authenticate,

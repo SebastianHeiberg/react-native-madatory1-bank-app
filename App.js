@@ -48,7 +48,7 @@ function Navigation() {
 
   return (
     <NavigationContainer>
-      {!myAuthcontext.isAuthenticated &&<AuthStack />}
+      {!myAuthcontext.isAuthenticated && <AuthStack />}
       {myAuthcontext.isAuthenticated && <AuthenticatedStack />}
     </NavigationContainer>
   );
@@ -69,8 +69,6 @@ export default function App() {
       const storedEmail = await AsyncStorage.getItem("email");
 
       if (storedToken && storedEmail) {
-        console.log("token and email found in async storage");
-        console.log("email: ", storedEmail);
         authContext.authenticate(storedToken, storedEmail);
       }
 

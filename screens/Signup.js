@@ -16,9 +16,8 @@ const Signup = ({ navigation }) => {
   async function Signup() {
     setIsAuthenticating(true)
     try {
-      const token = createUser(enteredEmail, enteredPassword);
-      console.log("the email saved : ", enteredEmail)
-      authContext.AuthContext(token, enteredEmail);
+      const token = createUser(enteredEmail.toLowerCase(), enteredPassword);
+      await authContext.AuthContext(token, enteredEmail.toLowerCase());
     } catch (err) {
       alert("fejl: " + err.response.data.error.errors[0].message);
       setIsAuthenticating(false)

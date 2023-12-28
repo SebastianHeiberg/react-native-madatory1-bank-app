@@ -4,7 +4,6 @@ import { doc, setDoc} from "firebase/firestore";
 import { database } from "../firebase.js";
 
 async function authenticate(mode, email, password) {
-console.log("authenticateing kald til server")
 const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${process.env.EXPO_PUBLIC_API_KEY}`
     
 
@@ -13,13 +12,10 @@ const response = await axios.post(url, {
         password: password,
         returnSecureToken: true
 })
-
-console.log(response.data)
-console.log("email fra response:", response.data.email)
-const token = response.data.idToken
-AsyncStorage.setItem("token", token)
-AsyncStorage.setItem("email", email)
-
+const token = await response.data.idToken
+const newEmail = await response.data.email
+await AsyncStorage.setItem("token", token)
+await AsyncStorage.setItem("email", newEmail)
 return token
 }
 

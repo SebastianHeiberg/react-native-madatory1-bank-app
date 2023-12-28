@@ -7,7 +7,7 @@ import { loginToAccount } from "../util/auth.js";
 
 export default function Login ({navigation, route}) {
 
-    const [enteredEmail, setEnteredEmail ] = useState("Hejberg@gmail.com")
+    const [enteredEmail, setEnteredEmail ] = useState("hejberg@gmail.com")
     const [enteredPassword, setEnteredPassword ] = useState("123456")
     const authContext = useContext(AuthContext) 
     const [isAuthenticating, setIsAuthenticating] = useState(false)
@@ -17,10 +17,8 @@ export default function Login ({navigation, route}) {
     async function login() {
         setIsAuthenticating(true)
         try{
-            const token = await loginToAccount(enteredEmail, enteredPassword)
-            console.log("the email saved : ", enteredEmail)
-            authContext.authenticate(token, enteredEmail)
-            
+            const token = await loginToAccount(enteredEmail.toLowerCase(), enteredPassword)
+            authContext.authenticate(token, enteredEmail.toLowerCase())
         }catch(err){
             alert("fejl: " + err.response.data.error.errors[0].message)
             setIsAuthenticating(false)
