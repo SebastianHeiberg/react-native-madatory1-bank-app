@@ -1,9 +1,9 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { useContext } from 'react';
-import { AuthContext } from '../../store/myauth-Context.js';
+import { AuthContext } from '../store/myauth-Context.js';
 
-function LogoutButton({}) {
+export default function LogoutButton({}) {
 
   const authContext = useContext(AuthContext);
 
@@ -16,8 +16,6 @@ function LogoutButton({}) {
     </Pressable>
   );
 }
-
-export default LogoutButton;
 
 const styles = StyleSheet.create({
   button: {

@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet, TextInput } from "react-native"
-import { useContext, useEffect, useState } from "react"
-import { AuthContext } from "../store/myauth-Context.js"
-import { loginToAccount } from "../util/auth.js"
+import { useContext, useState } from "react"
+import { AuthContext } from "../store/myauth-Context.js";
+import { loginToAccount } from "../util/auth.js";
+
 
 
 export default function Login ({navigation, route}) {
 
-    const [enteredEmail, setEnteredEmail ] = useState("du@mail.dk")
+    const [enteredEmail, setEnteredEmail ] = useState("Hejberg@gmail.com")
     const [enteredPassword, setEnteredPassword ] = useState("123456")
     const authContext = useContext(AuthContext) 
     const [isAuthenticating, setIsAuthenticating] = useState(false)
@@ -17,7 +18,8 @@ export default function Login ({navigation, route}) {
         setIsAuthenticating(true)
         try{
             const token = await loginToAccount(enteredEmail, enteredPassword)
-            authContext.authenticate(token)
+            console.log("the email saved : ", enteredEmail)
+            authContext.authenticate(token, enteredEmail)
             
         }catch(err){
             alert("fejl: " + err.response.data.error.errors[0].message)
@@ -40,7 +42,7 @@ export default function Login ({navigation, route}) {
                             onChangeText={(newText) => setEnteredPassword(newText) }
                             placeholder="Your password"
                         />
-                        <Text style={styles.button} onPress={() => login()}>Login</Text>
+                        <Text style={styles.button} onPress={() => login()}>Log in to system</Text>
                         <Text style={styles.button} onPress={() => navigation.navigate('Signup')}>Sign up</Text>
 
                 </View>

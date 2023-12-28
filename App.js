@@ -1,20 +1,17 @@
 import { NavigationContainer } from '@react-navigation/native';
 // import NewAccount from './components/NewAccount.js';
-// import Homepage from './components/Homepage.js';
 // import DetailView from './components/DetailView.js';
 // import Profile from '/components/Profile.js';
-import Login from './screens/Login.js';
+import Homepage from './screens/Homepage.js';
 import Signup from './screens/Signup.js';
+import Login from './screens/Login.js';
+import Test from './screens/Test2.js';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useContext } from 'react';
-import WelcomeScreen from './screens/WelcomeScreen.js';
-import AuthContextProvider from './store/myauth-Context.js';
-import { AuthContext } from './store/myauth-Context.js';
-import Test from './screens/Test23.js';
-import { useEffect } from 'react';
+import AuthContextProvider, { AuthContext } from './store/myauth-Context.js';
+import { useEffect, useState, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState } from 'react';
 import AppLoading from 'expo-app-loading';
+
 const Stack = createNativeStackNavigator()
 
 function AuthStack() {
@@ -36,9 +33,12 @@ function AuthStack() {
 
 function AuthenticatedStack() {
   return (
-    <Stack.Navigator initialRouteName="test">
-     <Stack.Screen name="Welcome" component={WelcomeScreen} />
-     <Stack.Screen name="test" component={Test} />
+    <Stack.Navigator initialRouteName="Homepage">
+      <Stack.Screen
+        name="Homepage"
+        component={Homepage}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -57,7 +57,7 @@ function Navigation() {
 export default function App() {
 
 
-  function Root() {
+  function RootComp() {
     const [isReady, setIsReady] = useState(true);
     const authContext = useContext(AuthContext);
 
@@ -66,9 +66,12 @@ export default function App() {
       async function getToken() {
 
       const storedToken = await AsyncStorage.getItem("token");
+      const storedEmail = await AsyncStorage.getItem("email");
 
-      if (storedToken) {
-        authContext.authenticate(storedToken);
+      if (storedToken && storedEmail) {
+        console.log("token and email found in async storage");
+        console.log("email: ", storedEmail);
+        authContext.authenticate(storedToken, storedEmail);
       }
 
     }
@@ -88,7 +91,7 @@ export default function App() {
 
   return (
     <AuthContextProvider>
-      <Root />
+      <RootComp />
     </AuthContextProvider>
   );
 }
@@ -105,10 +108,7 @@ export default function App() {
   //         name='Signup'
   //         component={Signup}
   //         options={{ headerShown: false }}/>
-          // <Stack.Screen
-          // name='Home'
-          // component={Homepage}
-          // options={{ headerShown: false }}/>
+          // 
           // <Stack.Screen
           // name='NewAccount'
           // component={NewAccount}

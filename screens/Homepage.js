@@ -4,26 +4,42 @@ import { StatusBar } from 'expo-status-bar';
 import { useCollection } from 'react-firebase-hooks/firestore'
 import { collection } from 'firebase/firestore';
 import { database } from '../firebase.js';
-import { StatusContext } from '../store/authContext.js';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { AuthContext } from "../store/myauth-Context.js";
+import LogoutButton from '../components/LogoutButton.js';
+import { ActivityIndicator } from 'react-native';
+import { useState } from 'react';
 
 export default function Homepage ({navigation, route}) {
   
-  var statusContext = useContext(StatusContext) 
-  console.log(statusContext.currentUser)
-  const usercollection = statusContext.currentUser
-  const [values, loading, error] = useCollection(collection(database, usercollection))
-  const data = values?.docs.map((doc) => ({...doc.data(), id: doc.id}))
+  const authContext = useContext(AuthContext) 
+  const [usercollection, setUsercollection] = useState(authContext.email)
+  const [data, setData] = useState([]);
+  const [values, loading, error] = useCollection(
+    usercollection ? collection(database, usercollection) : null
+  );
 
+
+  useEffect(() => {
+    console.log("useeffetct in homepage")
+    console.log("email: " ,authContext.email)
+    console.log("token : ", authContext.token)
+    const newData = values?.docs.map((doc) => ({...doc.data(), id: doc.id}));
+    setData(newData);
+    console.log(newData)
+  }, [values]);
 
      return (
       <View style={styles.container}>
-        <Button title="logout"/>
+        <LogoutButton/> 
         <View style={styles.topBox}>
           <Text>Sebastians bank app</Text>
         </View>
         <View style={styles.accountsBox}>
-        <FlatList
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" /> // Replace with your own loading indicator
+        ) : (
+          <FlatList
             style={styles.list}
             data={data}
             renderItem={(itemData) => {
@@ -38,7 +54,8 @@ export default function Homepage ({navigation, route}) {
               );
             }}
           />
-        </View>
+        )}
+      </View>
         <View style={styles.createAccount}>
           <Text style={styles.linkItems} onPress={() => navigation.navigate('NewAccount', {usercollection})}>Opret ny konto</Text>
           <Text style={styles.linkItems} onPress={() => navigation.navigate('Profile', {usercollection})}>Dine profil oplysninger</Text>

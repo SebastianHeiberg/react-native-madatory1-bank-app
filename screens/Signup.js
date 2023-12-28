@@ -1,13 +1,10 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import axios from "axios";
 import { useState } from "react";
-import { setDoc, doc } from "firebase/firestore";
-import { database } from "../firebase";
-import { createUser } from "../util/auth";
-import { AuthContext } from "../store/myauth-Context";
+import { createUser } from "../util/auth.js";
 import { useContext } from "react";
+import { AuthContext } from "../store/myauth-Context.js";
 
-const Signup = ({ navigation, route }) => {
+const Signup = ({ navigation }) => {
   
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
@@ -20,7 +17,8 @@ const Signup = ({ navigation, route }) => {
     setIsAuthenticating(true)
     try {
       const token = createUser(enteredEmail, enteredPassword);
-      authContext.AuthContext(token);
+      console.log("the email saved : ", enteredEmail)
+      authContext.AuthContext(token, enteredEmail);
     } catch (err) {
       alert("fejl: " + err.response.data.error.errors[0].message);
       setIsAuthenticating(false)
@@ -42,7 +40,7 @@ const Signup = ({ navigation, route }) => {
             onChangeText={(newText) => setEnteredPassword(newText)}
             placeholder="Your password"
           />
-          <Text style={styles.button} onPress={() => Signup()}>sign up</Text>
+          <Text style={styles.button} onPress={() => Signup()}>Confirm</Text>
           <Text style={styles.button} onPress={() => navigation.navigate("Login")}>
             Back to login
           </Text>
